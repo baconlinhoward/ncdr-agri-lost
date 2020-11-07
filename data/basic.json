@@ -1,0 +1,21 @@
+[{
+	"event": {
+		"start": "20200522",
+		"end": "20200528"
+    },
+    "year": 2020,
+	"name": "0823熱帶低壓豪雨",
+	"estimatedRainAccumulation": 1000,
+	"mainAffectCounty": [{
+		"name": "嘉義市",
+		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["番石榴", "香蕉"]
+	}, {
+		"name": "臺南市",
+		"crops": ["養殖漁業", "文旦柚", "番茄"]
+	}],
+	"totalEconomicLose": 871985,
+	"detailFile": "20200823熱帶低壓豪雨.json"
+}]
