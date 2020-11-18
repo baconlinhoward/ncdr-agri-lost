@@ -4,6 +4,26 @@
 		"end": "20200528"
     },
     "year": 2020,
+	"name": "五月豪雨",
+	"estimatedRainAccumulation": 500,
+	"mainAffectCounty": [{
+		"name": "屏東縣",
+		"crops": ["芒果", "蓮霧", "荔枝"]
+	}, {
+		"name": "高雄市",
+		"crops": ["水稻", "木瓜"]
+	}, {
+		"name": "雲林縣",
+		"crops": ["食用玉米", "落花生"]
+	}],
+	"totalEconomicLose": 8454,
+	"detailFile": "20200823熱帶低壓豪雨.json"
+}, {
+	"event": {
+		"start": "20200823",
+		"end": "20200823"
+    },
+    "year": 2018,
 	"name": "0823熱帶低壓豪雨",
 	"estimatedRainAccumulation": 1000,
 	"mainAffectCounty": [{
@@ -16,6 +36,6 @@
 		"name": "臺南市",
 		"crops": ["養殖漁業", "文旦柚", "番茄"]
 	}],
-	"totalEconomicLose": 871985,
+	"totalEconomicLose": 87198,
 	"detailFile": "20200823熱帶低壓豪雨.json"
 }]

@@ -26,7 +26,8 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
   <!-- =======================================================
   * Template Name: BizLand - v1.1.1
   * Template URL: https://bootstrapmade.com/bizland-bootstrap-business-template/
@@ -39,7 +40,7 @@
 
   <!-- ======= Top Bar ======= -->
   <div id="topbar" class="d-lg-flex align-items-center">
-    <div class="container d-flex">
+    <div class="container d-flex" style="max-width: unset">
       <div class="contact-info mr-auto">
         <a href="https://www.ncdr.nat.gov.tw/" target="_blank"><img class="mr-2" src="src/logo.png" height="40" alt=""></a>
         <a class="font-weight-bold h3 align-middle" href="#">農業災害紀實網</a>
@@ -56,16 +57,15 @@
 
   <!-- ======= Header ======= -->
   <header id="header" class="border-bottom">
-    <div class="container d-flex align-items-center">
+    <div class="container d-flex align-items-center" style="max-width: unset">
 
       <!-- <h1 class="logo mr-auto"><a href="index.html">BizLand<span>.</span></a></h1> -->
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a>-->
 
-      <nav class="nav-menu d-none d-lg-block p-0">
+      <nav class="nav-menu d-none d-lg-block p-0" id="listTab">
         <ul>
-          <li class="active pl-0"><a href="#">紀實總覽</a></li>
-          <li><a href="#">0812豪雨與白鹿颱風事件</a></li>
+          <li class="active pl-0"><a href="#overview">紀實總覽</a></li>
         </ul>
       </nav><!-- .nav-menu -->
 
@@ -75,8 +75,8 @@
   <!-- ======= Hero Section ======= -->
   <section id="main-content-part" class="p-0">
     <div class="row">
-      <div class="col-4" style="height: calc( 100vh - 125px );">123</div>
-      <div class="col-8" style="height: calc( 100vh - 125px );">123</div>
+      <div class="col-4" style="height: calc( 100vh - 125px );"></div>
+      <div class="col-8" style="height: calc( 100vh - 125px );"></div>
     </div>
   </section><!-- End Hero -->
 
