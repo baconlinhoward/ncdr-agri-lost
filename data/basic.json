@@ -2,9 +2,16 @@
 	"event": {
 		"start": "20200522",
 		"end": "20200528"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20200522",
+		"end": "20200528"
     },
     "year": 2020,
 	"name": "五月豪雨",
+	"reason": "水災",
+	"content": "",
 	"estimatedRainAccumulation": 500,
 	"mainAffectCounty": [{
 		"name": "屏東縣",
@@ -17,14 +24,54 @@
 		"crops": ["食用玉米", "落花生"]
 	}],
 	"totalEconomicLose": 8454,
-	"detailFile": "20200823熱帶低壓豪雨.json"
+	"detailFile": "0522水災/0522水災.json"
 }, {
 	"event": {
-		"start": "20200823",
-		"end": "20200823"
+		"start": "20190812",
+		"end": "20190812"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20190812",
+		"end": "20190812"
+    },
+    "year": 2019,
+	"name": "0812豪雨暨白鹿颱風",
+	"reason": "水災",
+	"content": "",
+	"estimatedRainAccumulation": 1000,
+	"mainAffectCounty": [{
+		"name": "台中市",
+		"crops": ["西瓜"]
+	}, {
+		"name": "南投縣",
+		"crops": ["百香果", "苦瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["木瓜", "芭樂"]
+	}, {
+		"name": "屏東縣",
+		"crops": ["火龍果"]
+	}, {
+		"name": "臺東縣",
+		"crops": ["番荔枝", "香蕉", "水稻"]
+	}],
+	"totalEconomicLose": 13436,
+	"detailFile": "0812豪雨暨白鹿颱風/0812豪雨暨白鹿颱風.json"
+}, {
+	"event": {
+		"start": "20180823",
+		"end": "20180823"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20180823",
+		"end": "20180823"
     },
     "year": 2018,
 	"name": "0823熱帶低壓豪雨",
+	"reason": "水災",
+	"content": "",
 	"estimatedRainAccumulation": 1000,
 	"mainAffectCounty": [{
 		"name": "嘉義市",
@@ -37,5 +84,5 @@
 		"crops": ["養殖漁業", "文旦柚", "番茄"]
 	}],
 	"totalEconomicLose": 87198,
-	"detailFile": "20200823熱帶低壓豪雨.json"
+	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
 }]

@@ -1,0 +1,87 @@
+{
+	"name": "0823熱帶低壓豪雨",
+	"page": [{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0823熱帶低壓豪雨/投影片2.jpg"
+		}
+	},{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0823熱帶低壓豪雨/投影片3.jpg"
+		}
+	},{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0823熱帶低壓豪雨/投影片4.jpg"
+		}
+	},{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0823熱帶低壓豪雨/投影片5.jpg"
+		}
+	},{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0823熱帶低壓豪雨/投影片6.jpg"
+		}
+	},
+	{
+		"type": "normal",
+		"title": "iframe頁面說明",
+		"supportContent": [
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/UkuawZRZovA"
+		}
+	},
+	{
+		"type": "map",
+		"title": "嘉義市花生農損調查",
+		"supportContent": [
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "map",
+			"coordinates": [23.446194, 120.439730],
+			"url": "data/0823熱帶低壓豪雨/投影片14.jpg"
+		}
+	}]
+}

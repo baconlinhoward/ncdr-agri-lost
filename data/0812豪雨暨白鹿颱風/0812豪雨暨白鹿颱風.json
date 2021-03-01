@@ -1,0 +1,64 @@
+{
+	"name": "0812豪雨暨白鹿颱風",
+	"page": [{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0812豪雨暨白鹿颱風/投影片2.jpg"
+		}
+	},{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0812豪雨暨白鹿颱風/投影片3.jpg"
+		}
+	},{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0812豪雨暨白鹿颱風/投影片4.jpg"
+		}
+	},{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0812豪雨暨白鹿颱風/投影片5.jpg"
+		}
+	},{
+		"type": "normal",
+		"title": "圖片頁面說明",
+		"supportContent": [
+			"輸入相關文字內容",
+			"輸入相關文字內容",
+			"輸入相關文字內容"
+		],
+		"mainContent": {
+			"type": "image",
+			"url": "data/0812豪雨暨白鹿颱風/投影片6.jpg"
+		}
+	}]
+}

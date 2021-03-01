@@ -8,6 +8,43 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+.legend {
+  line-height: 18px;
+  color: #555;
+}
+
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.info {
+  padding: 6px 8px;
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgb(0 0 0 / 20%);
+  border-radius: 5px;
+}
+
+.c-pointer {
+  cursor: pointer;
+}
+
+.table-sm td, .table-sm th {
+  padding: .2rem;
+}
+
+table.dataTable thead th, table.dataTable thead td {
+  padding: .2rem;
+}
+
+table.dataTable tbody th, table.dataTable tbody td {
+  padding: .2rem;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   color: #444444;
