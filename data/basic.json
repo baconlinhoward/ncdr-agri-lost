@@ -12,7 +12,14 @@
 	"name": "五月豪雨",
 	"reason": "水災",
 	"content": "",
-	"estimatedRainAccumulation": 500,
+	"estimatedRainAccumulation": {
+		"value": 500,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/0522水災/投影片3.JPG"
+		}
+	},
 	"mainAffectCounty": [{
 		"name": "屏東縣",
 		"crops": ["芒果", "蓮霧", "荔枝"]
@@ -23,7 +30,14 @@
 		"name": "雲林縣",
 		"crops": ["食用玉米", "落花生"]
 	}],
-	"totalEconomicLose": 8454,
+	"totalEconomicLose": {
+		"value": 8454,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
 	"detailFile": "0522水災/0522水災.json"
 }, {
 	"event": {
@@ -39,7 +53,14 @@
 	"name": "0812豪雨暨白鹿颱風",
 	"reason": "水災",
 	"content": "",
-	"estimatedRainAccumulation": 1000,
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/0522水災/投影片3.JPG"
+		}
+	},
 	"mainAffectCounty": [{
 		"name": "台中市",
 		"crops": ["西瓜"]
@@ -56,7 +77,14 @@
 		"name": "臺東縣",
 		"crops": ["番荔枝", "香蕉", "水稻"]
 	}],
-	"totalEconomicLose": 13436,
+	"totalEconomicLose": {
+		"value": 13436,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
 	"detailFile": "0812豪雨暨白鹿颱風/0812豪雨暨白鹿颱風.json"
 }, {
 	"event": {
@@ -72,7 +100,14 @@
 	"name": "0823熱帶低壓豪雨",
 	"reason": "水災",
 	"content": "",
-	"estimatedRainAccumulation": 1000,
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/0522水災/投影片3.JPG"
+		}
+	},
 	"mainAffectCounty": [{
 		"name": "嘉義市",
 		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
@@ -83,6 +118,341 @@
 		"name": "臺南市",
 		"crops": ["養殖漁業", "文旦柚", "番茄"]
 	}],
-	"totalEconomicLose": 87198,
+	"totalEconomicLose": {
+		"value": 87198,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
+	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
+}, {
+	"event": {
+		"start": "20180823",
+		"end": "20180823"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20180823",
+		"end": "20180823"
+    },
+    "year": 2018,
+	"name": "寒害測試1",
+	"reason": "寒害",
+	"content": "",
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/寒害測試1/投影片3.JPG"
+		}
+	},
+	"mainAffectCounty": [{
+		"name": "嘉義市",
+		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["番石榴", "香蕉"]
+	}, {
+		"name": "臺南市",
+		"crops": ["養殖漁業", "文旦柚", "番茄"]
+	}],
+	"totalEconomicLose": {
+		"value": 87198,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
+	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
+}, {
+	"event": {
+		"start": "20180823",
+		"end": "20180823"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20180823",
+		"end": "20180823"
+    },
+    "year": 2018,
+	"name": "寒害測試2",
+	"reason": "寒害",
+	"content": "",
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/寒害測試2/投影片3.JPG"
+		}
+	},
+	"mainAffectCounty": [{
+		"name": "嘉義市",
+		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["番石榴", "香蕉"]
+	}, {
+		"name": "臺南市",
+		"crops": ["養殖漁業", "文旦柚", "番茄"]
+	}],
+	"totalEconomicLose": {
+		"value": 87198,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
+	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
+}, {
+	"event": {
+		"start": "20180823",
+		"end": "20180823"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20180823",
+		"end": "20180823"
+    },
+    "year": 2018,
+	"name": "乾旱測試1",
+	"reason": "乾旱",
+	"content": "",
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/乾旱測試1/投影片3.JPG"
+		}
+	},
+	"mainAffectCounty": [{
+		"name": "嘉義市",
+		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["番石榴", "香蕉"]
+	}, {
+		"name": "臺南市",
+		"crops": ["養殖漁業", "文旦柚", "番茄"]
+	}],
+	"totalEconomicLose": {
+		"value": 87198,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
+	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
+}, {
+	"event": {
+		"start": "20180823",
+		"end": "20180823"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20180823",
+		"end": "20180823"
+    },
+    "year": 2018,
+	"name": "乾旱測試2",
+	"reason": "乾旱",
+	"content": "",
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/乾旱測試2/投影片3.JPG"
+		}
+	},
+	"mainAffectCounty": [{
+		"name": "嘉義市",
+		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["番石榴", "香蕉"]
+	}, {
+		"name": "臺南市",
+		"crops": ["養殖漁業", "文旦柚", "番茄"]
+	}],
+	"totalEconomicLose": {
+		"value": 87198,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
+	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
+}, {
+	"event": {
+		"start": "20180823",
+		"end": "20180823"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20180823",
+		"end": "20180823"
+    },
+    "year": 2018,
+	"name": "蟲害測試1",
+	"reason": "蟲害",
+	"content": "",
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/蟲害測試1/投影片3.JPG"
+		}
+	},
+	"mainAffectCounty": [{
+		"name": "嘉義市",
+		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["番石榴", "香蕉"]
+	}, {
+		"name": "臺南市",
+		"crops": ["養殖漁業", "文旦柚", "番茄"]
+	}],
+	"totalEconomicLose": {
+		"value": 87198,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
+	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
+}, {
+	"event": {
+		"start": "20180823",
+		"end": "20180823"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20180823",
+		"end": "20180823"
+    },
+    "year": 2018,
+	"name": "蟲害測試2",
+	"reason": "蟲害",
+	"content": "",
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/蟲害測試2/投影片3.JPG"
+		}
+	},
+	"mainAffectCounty": [{
+		"name": "嘉義市",
+		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["番石榴", "香蕉"]
+	}, {
+		"name": "臺南市",
+		"crops": ["養殖漁業", "文旦柚", "番茄"]
+	}],
+	"totalEconomicLose": {
+		"value": 87198,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
+	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
+}, {
+	"event": {
+		"start": "20180823",
+		"end": "20180823"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20180823",
+		"end": "20180823"
+    },
+    "year": 2018,
+	"name": "火災測試1",
+	"reason": "火災",
+	"content": "",
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/火災測試1/投影片3.JPG"
+		}
+	},
+	"mainAffectCounty": [{
+		"name": "嘉義市",
+		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["番石榴", "香蕉"]
+	}, {
+		"name": "臺南市",
+		"crops": ["養殖漁業", "文旦柚", "番茄"]
+	}],
+	"totalEconomicLose": {
+		"value": 87198,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
+	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
+}, {
+	"event": {
+		"start": "20180823",
+		"end": "20180823"
+	},
+	"survey": {
+		"member": "氣變組",
+		"start": "20180823",
+		"end": "20180823"
+    },
+    "year": 2018,
+	"name": "火災測試2",
+	"reason": "火災",
+	"content": "",
+	"estimatedRainAccumulation": {
+		"value": 1000,
+		"external": {
+			"name": "事件雨量圖",
+			"type": "image",
+			"url": "data/火災測試2/投影片3.JPG"
+		}
+	},
+	"mainAffectCounty": [{
+		"name": "嘉義市",
+		"crops": ["養殖漁業", "雞舍", "豬舍", "落花生", "西瓜"]
+	}, {
+		"name": "高雄市",
+		"crops": ["番石榴", "香蕉"]
+	}, {
+		"name": "臺南市",
+		"crops": ["養殖漁業", "文旦柚", "番茄"]
+	}],
+	"totalEconomicLose": {
+		"value": 87198,
+		"external": {
+			"name": "行政院經濟損失事件說明",
+			"type": "iframe",
+			"url": "https://www.youtube.com/embed/HiqlpihsYD4"
+		}
+	},
 	"detailFile": "0823熱帶低壓豪雨/20180823熱帶低壓豪雨.json"
 }]

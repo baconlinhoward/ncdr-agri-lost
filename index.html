@@ -35,7 +35,7 @@
   ======================================================== -->
 </head>
 
-<body>
+<body class="overflow-hidden">
 
   <!-- ======= Top Bar ======= -->
   <div id="topbar" class="d-lg-flex align-items-center">
@@ -45,10 +45,25 @@
         <a class="font-weight-bold h3 align-middle" href="#" style="vertical-align: text-top !important;">NCDR農業災害紀實網</a>
       </div>
       <div class="social-links">
+        <button class="btn btn-link text-white mt-1" data-toggle="dropdown"><i class="icofont-listine-dots mr-2"></i>事件篩選</button>
+        <div class="dropdown-menu p-2" id="projectFilterPanel">
+          <div class="input-group input-group-sm mb-1">
+            <div class="input-group-prepend">
+              <span class="input-group-text">年度</span>
+            </div>
+            <select class="custom-select" target="year"></select>
+          </div>
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+              <span class="input-group-text">災類</span>
+            </div>
+            <select class="custom-select" target="reason"></select>
+          </div>
+        </div>
         <button class="btn btn-link text-white mt-1 casePlayTrig" action="allAutoPlay" data-toggle="tooltip" data-placement="top" title="將所有紀實事件全部播放一次，直到結束。"><i class="icofont-ui-play mr-2" ></i>全部播放</button>
-        <button class="btn btn-link text-white mt-1 casePlayTrig" action="oneCyclePlay"  data-toggle="tooltip" data-placement="top" title="將當前紀實事件不斷循環播放，直到手動結束。"><i class="icofont-recycle-alt mr-2"></i>循環播放</button>
+        <button class="btn btn-link text-white mt-1 casePlayTrig" action="oneCyclePlay"  data-toggle="tooltip" data-placement="top" title="將當前紀實事件不斷循環播放，直到手動結束。"><i class="icofont-recycle-alt mr-2"></i>事件循環播放</button>
         <button class="btn btn-link text-white mt-1 casePlayTrig" action="stopPlay" data-toggle="tooltip" data-placement="top" title="將目前播放暫停。(播放時若要手動操作，請先按下此鍵)"><i class="icofont-ui-play-stop mr-2"></i>停止播放</button>
-        <button disabled class="btn btn-link text-white mt-1 casePlayTrig" action="setting" data-toggle="tooltip" data-placement="top" title="本系統相關設定與說明。"><i class="icofont-gear mr-2"></i>設定/說明</button>
+        <button class="btn btn-link text-white mt-1 casePlayTrig" action="setting" data-toggle="tooltip" data-placement="top" title="本系統相關設定。"><i class="icofont-gear mr-2"></i>設定</button>
       </div>
     </div>
   </div>
@@ -56,31 +71,67 @@
   <!-- ======= Header ======= -->
   <header id="header" class="border-bottom">
     <div class="container d-flex align-items-center" style="max-width: unset">
-
-      <!-- <h1 class="logo mr-auto"><a href="index.html">BizLand<span>.</span></a></h1> -->
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a>-->
-
-      <nav class="nav-menu d-none d-lg-block p-0" id="listTab">
-        <ul>
-          <li class="active pl-0"><a href="#overview">紀實總覽</a></li>
-        </ul>
+      <nav class="nav-menu d-none d-lg-block p-0 beauty-scrollbar overflow-auto" id="listTab">
+        <ul></ul>
       </nav><!-- .nav-menu -->
-
     </div>
   </header><!-- End Header -->
 
   <!-- ======= Hero Section ======= -->
   <section id="main-content-part" class="p-0">
     <div class="row">
-      <div class="col-4" style="height: calc( 100vh - 125px );"></div>
-      <div class="col-8" style="height: calc( 100vh - 125px );"></div>
+      <div class="col-4" style="height: calc( 100vh - 115px );"></div>
+      <div class="col-8" style="height: calc( 100vh - 115px );"></div>
     </div>
   </section><!-- End Hero -->
 
   <div id="preloader"></div>
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
+  <div class="modal fade" tabindex="-1" role="dialog" id="setting-info-modal">
+    <div class="modal-dialog modal-sm modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">設定</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>播放間隔</label>
+                <select class="form-control" id="play-gap-setting">
+                  <option value="2000">2秒</option>
+                  <option value="3000">3秒</option>
+                  <option value="4000">4秒</option>
+                  <option selected value="5000">5秒</option>
+                  <option value="6000">6秒</option>
+                  <option value="7000">7秒</option>
+                  <option value="8000">8秒</option>
+                  <option value="9000">9秒</option>
+                  <option value="10000">10秒</option>
+                </select>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="atrr-info-modal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+        </div>
+    </div>
+  </div>
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -95,6 +146,7 @@
   <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
   <!-- Template Main JS File -->
   <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="assets/js/jquery.mousewheel.min.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/initial.js"></script>
 

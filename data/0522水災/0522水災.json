@@ -10,6 +10,7 @@
 		],
 		"mainContent": {
 			"type": "image",
+			"shape": "scale",
 			"url": "data/0522水災/投影片2.JPG"
 		}
 	},{
@@ -22,6 +23,7 @@
 		],
 		"mainContent": {
 			"type": "image",
+			"shape": "scale",
 			"url": "data/0522水災/投影片3.JPG"
 		}
 	},{
@@ -34,6 +36,7 @@
 		],
 		"mainContent": {
 			"type": "image",
+			"shape": "scale",
 			"url": "data/0522水災/投影片4.JPG"
 		}
 	},{
@@ -46,6 +49,7 @@
 		],
 		"mainContent": {
 			"type": "image",
+			"shape": "scale",
 			"url": "data/0522水災/投影片5.JPG"
 		}
 	},{
@@ -58,6 +62,7 @@
 		],
 		"mainContent": {
 			"type": "image",
+			"shape": "scale",
 			"url": "data/0522水災/投影片6.JPG"
 		}
 	},
@@ -74,13 +79,14 @@
 	},
 	{
 		"type": "map",
+		"coordinates": [22.880827, 120.549207],
 		"title": "高雄市美濃木瓜農損調查",
 		"supportContent": [
 			"勘查頁面說明"
 		],
 		"mainContent": {
-			"type": "map",
-			"coordinates": [22.880827, 120.549207],
+			"type": "image",
+			"shape": "scale",
 			"url": "data/0522水災/投影片15.JPG"
 		}
 	}]

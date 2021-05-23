@@ -13,6 +13,10 @@
   color: #555;
 }
 
+.h-400 {
+  height: 400px;
+}
+
 .legend i {
   width: 18px;
   height: 18px;
@@ -152,10 +156,22 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 #topbar {
   background: #106eea;
-  height: 70px;
+  height: 60px;
   font-size: 14px;
   transition: all 0.5s;
   color: #fff;
+}
+
+.beauty-scrollbar::-webkit-scrollbar {
+  border-radius: 10px;
+  width: 5px;
+  height: 5px;
+  background-color: rgba(0,0,0,0);
+}
+
+.beauty-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(91, 106, 125, .4);
+  border-radius: 4px;
 }
 
 #topbar.topbar-scrolled {

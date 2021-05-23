@@ -1,19 +1,71 @@
 $(document).ready(function(){
   var data = {
-        project: ajax_call("data/basic.json"),
+        project: ajax_call("data/basic.json").sort(function(a, b){
+          return b.event.start - a.event.start
+        }),
         taiwanLayer: ajax_call("data/taiwan.json")
       },
       map,
       html = {
-        initialMainPageHtml: mainPageTemplate(data),
-        listTabEvent: ""
+        initialMainPageHtml: mainPageTemplate(data)
+      },
+      mouseMovingStatus = false,
+      filterObject = {
+        year: {
+          data: [],
+          html: '<option value="全部">全部</option>'
+        },
+        reason: {
+          data: [],
+          html: '<option value="全部">全部</option>'
+        }
       }
-
+  
   data.project.forEach(function(element){
-    html.listTabEvent += `<li><a href="#${element.name}">${element.name}</a></li>`
+    if (!filterObject.year.data.includes(element.year)) {
+      filterObject.year.data.push(element.year)
+      filterObject.year.html += `<option value="${element.year}">${element.year}</option>`
+    }
+    if (!filterObject.reason.data.includes(element.reason)) {
+      filterObject.reason.data.push(element.reason)
+      filterObject.reason.html += `<option value="${element.reason}">${element.reason}</option>`
+    }
   })
-  $("#listTab ul").append(html.listTabEvent)
+  $('#projectFilterPanel select[target="year"]').html(filterObject.year.html)
+  $('#projectFilterPanel select[target="reason"]').html(filterObject.reason.html)
+  $('#projectFilterPanel select').change(function(){
+    var query = {}, 
+        filterData = {
+          taiwanLayer: data.taiwanLayer
+        }
+    $('#projectFilterPanel select').each(function(){
+      query[$(this).attr('target')] = $(this).val()
+    })
+    switch (true) {
+      case (query.year === "全部" && query.reason === "全部"):
+        filterData.project = data.project
+        break;
+      case (query.year === "全部" && query.reason !== "全部"):
+        filterData.project = data.project.filter(el => { 
+          return el.reason === query.reason
+        })
+        break;
+      case (query.year !== "全部" && query.reason === "全部"):
+        filterData.project = data.project.filter(el => { 
+          return el.year === Number(query.year)
+        })
+        break;
+      default:
+        filterData.project = data.project.filter(el => { 
+          return (el.year === Number(query.year) && el.reason === query.reason)
+        })
+    }
+    html.initialMainPageHtml = mainPageTemplate(filterData)
+    $('#listTab li a[href="#overview"]').click()
+  })
+  
   $("#listTab").on("click", "li a", function(){
+    $("#listTab").scrollLeft($(this)[0].parentElement.offsetLeft-15);
     // UI control
     $("#listTab li").each(function(){
       $(this).removeClass("active")
@@ -48,13 +100,13 @@ $(document).ready(function(){
           }
         }).addTo(map)
         var tbodyHtml = ""
-        data.project.forEach(function(element, index){
-          tbodyHtml += `<tr class="c-pointer"><td>${(index+1)}</td><td>${timeConverter(element.event.start) + "~" + timeConverter(element.event.end)}</td><td>${element.name}</td><td>${element.totalEconomicLose}萬</td><td>${element.estimatedRainAccumulation}mm</td></tr>`  
+        html.initialMainPageHtml.project.project.forEach(function(element, index){
+          tbodyHtml += `<tr class="c-pointer"><td>${timeConverter(element.event.start) + "~" + timeConverter(element.event.end)}</td><td>${element.reason}</td><td>${element.name}</td><td>${element.totalEconomicLose.value}萬</td><td>${element.estimatedRainAccumulation.value}mm</td></tr>`  
         })
         $("#table-overview").html(`
           <table class="table table-sm table-hover text-center w-100">
             <thead class="thead-dark">
-              <tr><th>#</th><th>事件時間</th><th>事件名稱</th><th>經濟損失</th><th>事件雨量</th></tr>
+              <tr><th>時間</th><th>類型</th><th>事件名稱</th><th>經濟損失</th><th>事件雨量</th></tr>
             </thead>
             <tbody>
               ${tbodyHtml}
@@ -67,6 +119,7 @@ $(document).ready(function(){
         searchTableInitial(true)
       }, 1000)
     } else {
+      mouseMovingStatus = false
       var targetData = data.project.filter(function(element){
             return element.name == target
           })[0],
@@ -74,6 +127,7 @@ $(document).ready(function(){
       $("#main-content-part").html(targetCaseHtml.html)
       $('#caseDetailedPageInitial').click(function(){
         caseDetailedPageTemplate(targetCaseHtml.output)
+        mouseMovingStatus = false
       })
       setTimeout(function(){
         map = initialMap({
@@ -100,11 +154,21 @@ $(document).ready(function(){
           }
         }).addTo(map)
       }, 1000)
+      $("#main-content-part").off().mousewheel(function(e){
+        if (!mouseMovingStatus && e.deltaY === -1) {
+          mouseMovingStatus = true
+          $('#caseDetailedPageInitial').click()
+        }
+      })
     }
   })
 
   // initial
   $('[data-toggle="tooltip"]').tooltip()
+  $('.dropdown-menu').on("click.bs.dropdown", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  });
   if (location.hash == '') {
     $('#listTab li a[href="#overview"]').click()
   } else {
@@ -114,6 +178,34 @@ $(document).ready(function(){
   $(window).resize(function(e){
     searchTableInitial(false)
   })
+  $('body').on('click', '.external-modal', function(){
+    var parameterList = {
+        name: $(this).attr('modal-title'),
+        type: $(this).attr('modal-type'),
+        url: $(this).attr('modal-url')
+      },
+      modalTrigBool = true,
+      html
+    Object.keys(parameterList).forEach(el => {
+      if(parameterList[el] === ""){
+        modalTrigBool = false
+      }
+    })
+    if (modalTrigBool) {
+      switch (parameterList.type) {
+        case "image":
+          html = `<img class="w-100" src="${parameterList.url}">`
+          break
+        case "iframe":
+          html = `<iframe class="w-100 h-400" src="${parameterList.url}"></iframe>`
+          break
+      }
+      modal_open({
+        title: parameterList.name,
+        content: html
+      })
+    }
+  })
   // play Setting
   var intervalControl
   $('.casePlayTrig').click(function(){
@@ -121,6 +213,7 @@ $(document).ready(function(){
         nowActiveTab = $('#listTab li.active a').attr('href')
     switch (action) {
       case 'allAutoPlay':
+        viewBlockHandle('none')
         if (nowActiveTab == '#overview') {
           $('#listTab li a').eq(1).click()
         }
@@ -134,15 +227,17 @@ $(document).ready(function(){
                 $('#listTab li.active').next().find('a').click()
               } else {
                 clearInterval(intervalControl)
+                $('.casePlayTrig[action="stopPlay"]').click()
               }
             } else {
               $('.caseDetailedPageControlTrig[action="next"]').click()
             }
           }
-        }, 5000);
+        }, Number($('#play-gap-setting').val()));
         break
       case 'oneCyclePlay':
         if (nowActiveTab != '#overview') {
+          viewBlockHandle('none')
           if ($('#caseDetailedPageInitial').length) {
             $('#caseDetailedPageInitial').click()
           }
@@ -153,19 +248,29 @@ $(document).ready(function(){
             } else {
               $('.caseDetailedPageControlTrig[action="next"]').click()
             }
-          }, 5000);
+          }, Number($('#play-gap-setting').val()));
         } else {
           alert('請選擇任一個事件紀實，以進行單事件紀實循環播放。')
         }
         break
       case 'stopPlay':
         clearInterval(intervalControl)
+        viewBlockHandle('auto')
         break
       case 'setting':
-        console.log(1)
+        $("#setting-info-modal").modal();
         break
     }
   })
+
+  function viewBlockHandle(type){
+    $('#projectFilterPanel').css('pointer-events', type)
+    $('.casePlayTrig[action="setting"]').css('pointer-events', type)
+    $('.casePlayTrig[action="allAutoPlay"]').css('pointer-events', type)
+    $('.casePlayTrig[action="oneCyclePlay"]').css('pointer-events', type)
+    $("#header").css('pointer-events', type)
+    $("#main-content-part").css('pointer-events', type)
+  }
 })
 
 function getColor(d) {
@@ -183,6 +288,7 @@ function searchTableInitial(first){
     $('#table-overview table').DataTable().destroy()
   }
   $('#table-overview table').DataTable({
+    "order": [[ 0, "desc" ]],
     "scrollY": ($(window).height()-470) + "px",
     "scrollCollapse": true
   });
@@ -191,33 +297,26 @@ function searchTableInitial(first){
 
 function mainPageTemplate(data){
   var input = {
-    event: data.project.length,
-    economic: 0,
-    region: 0,
-    county: {},
-    agriType: 0,
-    seriesChart: {
-      eventName: [],
-      economic: [],
-      rain: []
-    }
-  }
+      event: data.project.length,
+      economic: 0,
+      region: 0,
+      county: {},
+      agriType: 0
+    },
+    listTabEvent = '<li class="active pl-0"><a href="#overview">紀實總覽</a></li>'
   data.project.forEach(function(element){
-    input.economic += element.totalEconomicLose / 10000
+    listTabEvent += `<li><a href="#${element.name}">${element.name}</a></li>`
+    input.economic += element.totalEconomicLose.value / 10000
     input.region += element.mainAffectCounty.length
     element.mainAffectCounty.forEach(function(eachRegion){
       if (!input.county[eachRegion.name]) { input.county[eachRegion.name] = 0 }
       input.county[eachRegion.name] += 1
       input.agriType += eachRegion.crops.length
     })
-    // seriesChart
-    var thisEventTimeUtc = dateStringToUtc(element.event.start)
-    input.seriesChart.eventName.push([thisEventTimeUtc, element.name])
-    input.seriesChart.economic.push([thisEventTimeUtc, element.totalEconomicLose])
-    input.seriesChart.rain.push([thisEventTimeUtc, element.estimatedRainAccumulation])
   })
+  $("#listTab ul").html(listTabEvent)
   var html = `
-    <section class="counts pb-0" style="height: calc( 100vh - 125px ); padding-top: 10px;">
+    <section class="counts pb-0" style="height: calc( 100vh - 115px ); padding-top: 10px;">
       <div class="container" data-aos="fade-up" style="max-width: unset">
         <div class="row">
           <div class="col-lg-9">
@@ -253,22 +352,24 @@ function mainPageTemplate(data){
               <div class="col-lg-12 mt-3 mb-1">
                 <h4 class="mb-1 font-weight-bold"><i class="icofont-table mr-2"></i>農損事件搜尋表</h4>
               </div>
-              <div class="col-lg-12" id="table-overview" style="height: calc( 100vh - 340px );"></div>
+              <div class="col-lg-12" id="table-overview" style="height: calc( 100vh - 330px );"></div>
             </div>
           </div>
           <div class="col-lg-3">
-            <div class="w-100 rounded" id="map" style="height: calc( 100vh - 140px )"></div>
+            <div class="w-100 rounded" id="map" style="height: calc( 100vh - 130px )"></div>
           </div>
         </div>
       </div>
     </div>`
   return {
     html: html,
-    output: input
+    output: input,
+    project: data
   }
 }
 
 function casePageTemplate(data){
+  console.log(data)
   data.agriType = 0
   data.region = data.mainAffectCounty.length
   data.county = {}
@@ -285,34 +386,34 @@ function casePageTemplate(data){
   })
   data.pageData = ajax_call('data/' + data.detailFile)
   var html = `
-    <section class="counts pb-0" style="height: calc( 100vh - 125px ); padding-top: 10px;">
+    <section class="counts pb-0" style="height: calc( 100vh - 115px ); padding-top: 10px;">
       <div class="container" data-aos="fade-up" style="max-width: unset">
         <div class="row">
           <div class="col-lg-9">
             <div class="row" style="padding-top: 20px;">
               <div class="col-lg-3 col-md-6">
-                <div class="count-box">
+                <div class="count-box external-modal" modal-type="${data.estimatedRainAccumulation.external.type}" modal-title="${data.estimatedRainAccumulation.external.name}" modal-url="${data.estimatedRainAccumulation.external.url}">
                   <i class="icofont-rainy"></i>
-                  <span data-toggle="counter-up">${data.estimatedRainAccumulation}</span>
+                  <span data-toggle="counter-up">${data.estimatedRainAccumulation.value}</span>
                   <p>事件預估雨量(mm)</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
-                <div class="count-box">
+                <div class="count-box external-modal" modal-type="${data.totalEconomicLose.external.type}" modal-title="${data.totalEconomicLose.external.name}" modal-url="${data.totalEconomicLose.external.url}">
                   <i class="icofont-money"></i>
-                  <span data-toggle="counter-up">${(data.totalEconomicLose / 10000).toFixed(2)}</span>
+                  <span data-toggle="counter-up">${(data.totalEconomicLose.value / 10000).toFixed(2)}</span>
                   <p>總經濟損失(億)</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
-                <div class="count-box">
+                <div class="count-box external-modal" modal-type="" modal-title="" modal-url="">
                   <i class="icofont-google-map"></i>
                   <span data-toggle="counter-up">${data.region}</span>
                   <p>影響縣市數</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
-                <div class="count-box">
+                <div class="count-box external-modal" modal-type="" modal-title="" modal-url="">
                   <i class="icofont-plant"></i>
                   <span data-toggle="counter-up">${data.agriType}</span>
                   <p>損失作物種類數</p>
@@ -321,7 +422,7 @@ function casePageTemplate(data){
               <div class="col-lg-12 mt-3 mb-1">
                 <h4 class="mb-1 font-weight-bold"><i class="icofont-info-square mr-2"></i>${data.year + "年「" + data.name}」農損事件簡介</h4>
               </div>
-              <div class="col-lg-5 overflow-auto" style="height: calc( 100vh - 400px );">
+              <div class="col-lg-5 overflow-auto" style="height: calc( 100vh - 390px );">
                 <ul>
                   <li>事件時間：${timeConverter(data.event.start) + "~" + timeConverter(data.event.end)}</li>
                   <li>調查時間：${timeConverter(data.survey.start) + "~" + timeConverter(data.survey.end)}</li>
@@ -330,7 +431,7 @@ function casePageTemplate(data){
                   <li>事件簡述：${nullConverter(data.content)}</li>
                 </ul>
               </div>
-              <div class="col-lg-7 overflow-auto" style="height: calc( 100vh - 400px );">
+              <div class="col-lg-7 overflow-auto" style="height: calc( 100vh - 390px );">
                 <ul>
                   <li>影響區域表</li>
                   <table class="table table-sm table-hover text-center table-bordered">
@@ -353,7 +454,7 @@ function casePageTemplate(data){
             </div>
           </div>
           <div class="col-lg-3">
-            <div class="w-100 rounded" id="map" style="height: calc( 100vh - 140px )"></div>
+            <div class="w-100 rounded" id="map" style="height: calc( 100vh - 130px )"></div>
           </div>
         </div>
       </div>
@@ -365,16 +466,17 @@ function casePageTemplate(data){
 }
 
 function caseDetailedPageTemplate(data){
-  var pageOption = ''
+  var pageOption = '',
+      mouseMovingStatus = false
   for (var index = 0; index < data.pageData.page.length; index++) {
     pageOption += `<option value="${index}">${index+1}</option>`
   }
   $("#main-content-part").html(`
-    <section class="counts pb-0 pt-0" id="caseDetailedPage" style="height: calc( 100vh - 125px );">
+    <section class="counts pb-0 pt-0" id="caseDetailedPage" style="height: calc( 100vh - 115px );">
       <div class="container" data-aos="fade-up" style="max-width: unset">
         <div class="row">
-          <div class="col-lg-3 border-right overflow-hidden" style="height: calc( 100vh - 125px );">
-            <div class="overflow-auto caseDetailedPageText" style="height: calc( 100vh - 175px );"></div>
+          <div class="col-lg-3 border-right overflow-hidden" style="height: calc( 100vh - 115px );">
+            <div class="overflow-auto caseDetailedPageText" style="height: calc( 100vh - 165px );"></div>
             <div class="border-top pt-2" style="user-select: none;">
               <i class="icofont-home mr-2 c-pointer caseDetailedPageControlTrig" action="home"></i>
               <i class="icofont-ui-previous mr-2 c-pointer caseDetailedPageControlTrig" action="last"></i>
@@ -409,8 +511,9 @@ function caseDetailedPageTemplate(data){
     caseDetailedPageSubControl('on', $(this).val())
   })
   $('.caseDetailedPageControlTrig').click(function(){
+    
     var action = $(this).attr('action'),
-        nowPageIndex = parseInt($('#caseDetailedPageChangeTrig').val()) 
+        nowPageIndex = parseInt($('#caseDetailedPageChangeTrig').val())
     switch (action) {
       case 'home':
         caseDetailedPageSubControlInitial()
@@ -422,6 +525,8 @@ function caseDetailedPageTemplate(data){
           caseDetailedPageSubControlInitial()
           caseDetailedPageSubControl('on', (nowPageIndex - 1))
           $('#caseDetailedPageChangeTrig').val(String(nowPageIndex - 1))
+        } else {
+          $('#listTab a[href="#' + data.name + '"]').click()
         }
         break
       case 'next':
@@ -431,6 +536,18 @@ function caseDetailedPageTemplate(data){
           $('#caseDetailedPageChangeTrig').val(String(nowPageIndex + 1))
         }
         break
+    }
+    mouseMovingStatus = false
+  })
+
+  $("#main-content-part").off().mousewheel(function(e){
+    if (!mouseMovingStatus && e.deltaY === -1) {
+      mouseMovingStatus = true
+      $('.caseDetailedPageControlTrig[action="next"]').click()
+    }
+    if (!mouseMovingStatus && e.deltaY === 1) {
+      mouseMovingStatus = true
+      $('.caseDetailedPageControlTrig[action="last"]').click()
     }
   })
 }
@@ -442,16 +559,19 @@ function caseDetailedPageTemplateCreate(info, pageIndex){
   })
   switch (info.mainContent.type) {
     case "image":
-      contentHtml = `<img src="${info.mainContent.url}" class="w-100 h-100"></img>`
-      break
-    case "map":
-      contentHtml = `<img src="${info.mainContent.url}" class="w-100 h-100"></img>`
-      paragraphTextHtmlStyle = ' class="overflow-auto" style="height: calc( 100vh - 490px );"'
-      mapHtml = `<div id="caseDetailedPageMap${pageIndex}" class="w-100" style="height: 250px;" lon="${info.mainContent.coordinates[1]}" lat="${info.mainContent.coordinates[0]}"></div>`
+      if (info.mainContent.shape === 'scale') {
+        contentHtml = `<img src="${info.mainContent.url}" class="h-100"></img>`
+      } else {
+        contentHtml = `<img src="${info.mainContent.url}" class="w-100 h-100"></img>`
+      }
       break
     case "iframe":
       contentHtml = `<iframe src="${info.mainContent.url}" class="w-100 h-100 border-0"></iframe>`
       break
+  }
+  if (info.type === "map") {
+    paragraphTextHtmlStyle = ' class="overflow-auto" style="height: calc( 100vh - 480px );"'
+    mapHtml = `<div id="caseDetailedPageMap${pageIndex}" class="w-100" style="height: 250px;" lon="${info.coordinates[1]}" lat="${info.coordinates[0]}"></div>`
   }
   var html = {
     text: `
@@ -463,7 +583,7 @@ function caseDetailedPageTemplateCreate(info, pageIndex){
         ${mapHtml}
       </div>`,
     content: `
-      <div class="d-none caseDetailedPageContentSub" style="height: calc( 100vh - 125px );">
+      <div class="d-none caseDetailedPageContentSub text-center" style="height: calc( 100vh - 115px );">
         ${contentHtml}
       </div>`
   }
