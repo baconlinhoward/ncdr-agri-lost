@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Jekyll v3.8.6">
+  <title>NCDR農業災害紀實網後台</title>
+  <link href="src/logo.png" rel="icon">
+  <link rel="stylesheet" href="assets/manage/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/manage/index.css">
+  <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+</head>
+
+<body style="font-family: 'Noto Sans TC', sans-serif;">
+  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">NCDR農業災害紀實網後台</a>
+    <h6 class="color-w m-0" id="setting-title"></h6>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <a href="index.html" class="btn btn-link text-white">回到主頁</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebar-div" class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky" id="sidebar-div">
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>功能列表</span>
+            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+              <span data-feather="plus-circle"></span>
+            </a>
+          </h6>
+          <ul class="nav flex-column" id="setting-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="#membersetting" function-name="membersetting">
+                
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mb-3">
+        <div class="mt-4"></div>
+        <div class="mt-4" id="main-content"></div>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal fade" id="event_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 600px !important;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-bold w-100">視窗檢視</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mostly-customized-scrollbar">
+          <div id='event_container' style="width: 100%; min-height: 70vh; background-color: white !important"></div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="assets/manage/jquery.min.js"></script>
+  <script type="text/javascript" src="assets/manage/popper.min.js"></script>
+  <script type="text/javascript" src="assets/manage/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="assets/manage/initial.js"></script>
+</body>
+
+</html>
