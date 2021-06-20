@@ -329,6 +329,7 @@ var rawData = {},
                         if (thisEventInfo.page) {
                             editModal(thisEventInfo, targetIndex, thisEventInfo.page)
                         } else {
+                            thisEventInfo.page = thisServerSettingJson.page
                             editModal(thisEventInfo, targetIndex, thisServerSettingJson.page)
                         }
                     } else {
@@ -354,13 +355,28 @@ var rawData = {},
                 }
 
                 function editModal(thisEventInfo, targetIndex, beforeParameter){
-                    var modalTitle = "農損調查事件頁面新增(" + thisEventInfo.name + ")"
-                    if (beforeParameter) {
-                        modalTitle = "農損調查事件頁面修改(" + thisEventInfo.name + ")"
-                    } 
+                    var modalTitle = "農損調查事件頁面設定(" + thisEventInfo.name + ")",
+                        contentPageTypeMapping = {
+                            normal: "一般",
+                            map: "地圖"
+                        }
                     modal_open(`
-                        <button type="button" class="btn btn-primary btn-sm">新增頁面</button>
-                        <table id="survey-page-setting-table" class="table table-striped table-bordered table-sm text-center">
+                        <h6 class="font-weight-bold">頁面新增設定</h6>
+                        <div class="form-group">
+                            <label class="m-0">頁面標題</label>
+                            <input class="form-control survey-page-adding" target="title">
+                        </div>
+                        <div class="form-group">
+                            <label class="m-0">頁面類型</label>
+                            <select class="form-control survey-page-adding" target="type">
+                                <option value="normal">一般</option>
+                                <option value="map">地圖</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm" id="survey-page-adding-trig">新增頁面</button>
+                        <hr>
+                        <h6 class="font-weight-bold">頁面內容設定</h6>
+                        <table id="survey-page-setting-table" class="table table-striped table-bordered table-sm text-center mb-0">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>頁數</th>
@@ -372,7 +388,7 @@ var rawData = {},
                             <tbody>
                             </tbody>
                         </table>`,
-                        '<button type="button" class="btn btn-success btn-sm float-right" id="survey-form-sumbit">提交設定並匯出設定檔</button>',
+                        '<button type="button" class="btn btn-success btn-sm float-right" id="survey-form-sumbit">匯出本事件頁面設定檔</button>',
                         modalTitle,
                         function(){
                             var dataArray = []
@@ -381,27 +397,189 @@ var rawData = {},
                             }
                             renewSurveyPageTable(dataArray)
 
+                            $("#survey-page-adding-trig").click(function(){
+                                var param = {}, boolean = true
+                                $(".survey-page-adding").each(function(){
+                                    var thisValue = $(this).val(),
+                                        thisAttr = $(this).attr("target")
+                                    param[thisAttr] = thisValue
+                                    if (thisValue === "") {
+                                        boolean = false
+                                    }
+                                })
+                                if (boolean) {
+                                    thisEventInfo.page.push({
+                                        mainContent:  {
+                                            type: "image",
+                                            url: ""
+                                        },
+                                        supportContent: [],
+                                        title: param["title"],
+                                        type: param["type"]
+                                    })
+                                    renewSurveyPageTable(thisEventInfo.page)
+                                    alert("頁面新增成功，請再於下方列表設定本頁內容！")
+                                } else {
+                                    alert("頁面標題尚未輸入！")
+                                }
+                            })
+
+                            $("#survey-form-sumbit").click(function(){
+                                var donwloadObject = { page: thisEventInfo.page }
+                                downloadObjectAsJson(donwloadObject, thisEventInfo.name)
+                            })
+
+                            $("#survey-page-setting-table tbody").on("click", ".survey-page-updating", function(){
+                                var param = {
+                                        action: $(this).attr("target"),
+                                        pageIndex: Number($(this).attr("target-index"))
+                                    },
+                                    thisRowDom = $(this)
+                                switch (param["action"]) {
+                                    case "update":
+                                        var thisPageInfo = thisEventInfo.page[param["pageIndex"]]
+                                        if ($("#survey-page-updating-row").length !== 0) {
+                                            $("#survey-page-updating-row").remove()
+                                        }
+                                        thisRowDom.parents("tr").after(`
+                                            <tr class="bg-dark text-white" id="survey-page-updating-row">
+                                                <td class="text-left" colspan="4">
+                                                    <div class="form-group">
+                                                        <label class="m-0">頁面標題</label>
+                                                        <input class="form-control" target="title">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="m-0">頁面類型</label>
+                                                        <select class="form-control" target="type">
+                                                            <option value="normal">一般</option>
+                                                            <option value="map">地圖</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3 coor-input">
+                                                        <label class="m-0">地圖經緯度設定</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">經度</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" target="lon">
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text">緯度</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" target="lat">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="m-0">內容類型</label>
+                                                        <select class="form-control" target="mainContent-type">
+                                                            <option value="image">圖片</option>
+                                                            <option value="iframe">iframe</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="m-0">內容路徑</label>
+                                                        <input class="form-control" target="mainContent-url">
+                                                    </div>
+                                                   <div class="form-group">
+                                                        <label class="m-0">內容顯示比例</label>
+                                                        <select class="form-control" target="mainContent-shape">
+                                                            <option value="full">填滿</option>
+                                                            <option value="scale">依來源比例</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group mb-2">
+                                                        <label class="m-0">說明文字</label>
+                                                        <textarea class="form-control" rows="6" target="supportContent"></textarea>
+                                                    </div>
+                                                    <div class="btn-group mb-2">
+                                                        <button type="button" class="btn btn-success btn-sm" target="update">更新</button>
+                                                        <button type="button" class="btn btn-danger btn-sm" target="close">關閉</button>
+                                                    </div>
+                                                </td>
+                                            </tr>`
+                                        )
+                                        // 
+                                        if (thisPageInfo.mainContent.shape == undefined) {
+                                            thisPageInfo.mainContent.shape = "full"
+                                        }
+                                        if (thisPageInfo.coordinates != undefined) {
+                                            $('#survey-page-updating-row .coor-input input[target="lon"]').val(thisPageInfo.coordinates[1])
+                                            $('#survey-page-updating-row .coor-input input[target="lat"]').val(thisPageInfo.coordinates[0])
+                                        }
+                                        $('#survey-page-updating-row input[target="title"]').val(thisPageInfo.title)
+                                        $('#survey-page-updating-row select[target="type"]').val(thisPageInfo.type)
+                                        $('#survey-page-updating-row select[target="mainContent-type"]').val(thisPageInfo.mainContent.type)
+                                        $('#survey-page-updating-row input[target="mainContent-url"]').val(thisPageInfo.mainContent.url)
+                                        $('#survey-page-updating-row select[target="mainContent-shape"]').val(thisPageInfo.mainContent.shape)
+                                        $("#survey-page-updating-row textarea").val(thisPageInfo.supportContent[0])
+                                        // 
+                                        $("#survey-page-updating-row .btn").click(function(){
+                                            switch ($(this).attr("target")) {
+                                                case "update":
+                                                    thisPageInfo.title = $('#survey-page-updating-row input[target="title"]').val()
+                                                    thisPageInfo.type = $('#survey-page-updating-row select[target="type"]').val()
+                                                    thisPageInfo.mainContent.type = $('#survey-page-updating-row select[target="mainContent-type"]').val()
+                                                    thisPageInfo.mainContent.url = $('#survey-page-updating-row input[target="mainContent-url"]').val()
+                                                    thisPageInfo.mainContent.shape = $('#survey-page-updating-row select[target="mainContent-shape"]').val()
+                                                    thisPageInfo.supportContent[0] = $("#survey-page-updating-row textarea").val()
+                                                    thisPageInfo.coordinates = [$('#survey-page-updating-row .coor-input input[target="lat"]').val(), $('#survey-page-updating-row .coor-input input[target="lon"]').val()]
+                                                    renewSurveyPageTable(thisEventInfo.page)
+                                                    break;
+                                                case "close":
+                                                    $("#survey-page-updating-row").remove()
+                                                    break;
+                                            }
+                                        })
+                                        $('#survey-page-updating-row select[target="type"]').change(function(){
+                                            var targetType = $(this).val()
+                                            if (targetType === "normal") {
+                                                $("#survey-page-updating-row .coor-input").addClass("d-none")
+                                            } else {
+                                                $("#survey-page-updating-row .coor-input").removeClass("d-none")
+                                            }
+                                        }).trigger("change")
+                                        break;
+                                    case "delete":
+                                        thisEventInfo.page.splice(param["pageIndex"],1)
+                                        renewSurveyPageTable(thisEventInfo.page)
+                                        break;
+                                }
+                            })
+
                             function renewSurveyPageTable(array){
                                 var html = ''
                                 if (array.length === 0) {
-                                    html = '<tr> <td colspan="4">目前尚未有內容</td> </tr>'
+                                    html = '<tr> <td colspan="4">目前尚未有頁面內容</td> </tr>'
                                 } else {
                                     array.forEach(function(element, index){
                                         html += `
-                                            <tr>
+                                            <tr original-index="${index}">
                                                 <td>第${(index+1)}頁</td>
                                                 <td>${element.title}</td>
-                                                <td>${element.type}</td>
+                                                <td>${contentPageTypeMapping[element.type]}</td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <button type="button" class="btn btn-success btn-sm">設定</button>
-                                                        <button type="button" class="btn btn-danger btn-sm">刪除</button>
+                                                        <button type="button" class="btn btn-success btn-sm survey-page-updating" target="update" target-index="${index}">設定</button>
+                                                        <button type="button" class="btn btn-danger btn-sm survey-page-updating" target="delete" target-index="${index}">刪除</button>
                                                     </div>
                                                 </td>
                                             </tr>`
                                     })
                                 }
                                 $("#survey-page-setting-table tbody").html(html)
+                                $("#survey-page-setting-table tbody").sortable({
+                                    update: function(){
+                                        var newDataArray = []
+                                        $("#survey-page-setting-table tbody tr").each(function(index){
+                                            $(this).find("td").eq(0).html("第" + (index+1) + "頁")
+                                            var thisOriginalIndex = Number($(this).attr("original-index")),
+                                                thisRowInfo = dataArray[thisOriginalIndex]
+                                            if (thisRowInfo) {
+                                                newDataArray.push(thisRowInfo)
+                                            }
+                                        })
+                                        thisEventInfo.page = newDataArray
+                                    }
+                                })
                             }
                         }
                     )
@@ -415,8 +593,6 @@ $(document).ready(function() {
     // data
     rawData.basic = ajax_call('data/basic.json')
     editData.basic = ajax_call('data/basic.json')
-    console.log(rawData)
-    console.log(editData)
     // initial
     Object.keys(functionList).forEach(function(el){
         render.nav += 
