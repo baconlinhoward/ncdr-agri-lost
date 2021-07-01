@@ -432,7 +432,7 @@ var rawData = {},
                             $("#survey-page-setting-table tbody").on("click", ".survey-page-updating", function(){
                                 var param = {
                                         action: $(this).attr("target"),
-                                        pageIndex: Number($(this).attr("target-index"))
+                                        pageIndex: Number($(this).parents('tr').attr("original-index"))
                                     },
                                     thisRowDom = $(this)
                                 switch (param["action"]) {
@@ -552,8 +552,8 @@ var rawData = {},
                                 } else {
                                     array.forEach(function(element, index){
                                         html += `
-                                            <tr original-index="${index}">
-                                                <td>第${(index+1)}頁</td>
+                                            <tr original-index="${index}" style="cursor: grab;">
+                                                <td>↑↓第${(index+1)}頁</td>
                                                 <td>${element.title}</td>
                                                 <td>${contentPageTypeMapping[element.type]}</td>
                                                 <td>
@@ -568,15 +568,18 @@ var rawData = {},
                                 $("#survey-page-setting-table tbody").html(html)
                                 $("#survey-page-setting-table tbody").sortable({
                                     update: function(){
+                                        $("#survey-page-updating-row").remove()
                                         var newDataArray = []
                                         $("#survey-page-setting-table tbody tr").each(function(index){
-                                            $(this).find("td").eq(0).html("第" + (index+1) + "頁")
+                                            $(this).find("td").eq(0).html("↑↓第" + (index+1) + "頁")
                                             var thisOriginalIndex = Number($(this).attr("original-index")),
                                                 thisRowInfo = dataArray[thisOriginalIndex]
                                             if (thisRowInfo) {
                                                 newDataArray.push(thisRowInfo)
                                             }
+                                            $(this).attr("original-index", String(index))
                                         })
+                                        dataArray = newDataArray
                                         thisEventInfo.page = newDataArray
                                     }
                                 })
