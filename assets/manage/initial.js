@@ -11,7 +11,7 @@ var rawData = {},
                         <button type="button" class="btn btn-warning btn-sm" id="download-trig">依目前設定匯出檔案</button>
                     </div>
                 </h4>
-                <div class="table-responsive">
+                <div class="table-responsive" style="overflow-x: unset;">
                     <table id="efffective-event-table" class="table table-striped table-bordered table-sm">
                         <thead class="thead-dark">
                             <tr>
@@ -81,13 +81,13 @@ var rawData = {},
                 function createObjectTemplateWithValue(){
                     var result = {
                         "event": {
-                            "start": $('input.survey-info[target="event-start"]').val(),
-                            "end": $('input.survey-info[target="event-end"]').val()
+                            "start": $('input.survey-info[target="event-start"]').val().replaceAll("-", ""),
+                            "end": $('input.survey-info[target="event-end"]').val().replaceAll("-", "")
                         },
                         "survey": {
                             "member": $('input.survey-info[target="survey-member"]').val(),
-                            "start": $('input.survey-info[target="survey-start"]').val(),
-                            "end": $('input.survey-info[target="survey-end"]').val()
+                            "start": $('input.survey-info[target="survey-start"]').val().replaceAll("-", ""),
+                            "end": $('input.survey-info[target="survey-end"]').val().replaceAll("-", "")
                         },
                         "year": Number($('input.survey-info[target="year"]').val()),
                         "name": $('input.survey-info[target="name"]').val(),
@@ -154,11 +154,11 @@ var rawData = {},
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">開始</span>
                                 </div>
-                                <input type="text" class="form-control survey-info" target="event-start">
+                                <input type="text" class="form-control survey-info date-picker" target="event-start">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">結束</span>
                                 </div>
-                                <input type="text" class="form-control survey-info" target="event-end">
+                                <input type="text" class="form-control survey-info date-picker" target="event-end">
                             </div>
                         </div>
                         <div class="form-group">
@@ -223,11 +223,11 @@ var rawData = {},
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">開始</span>
                                 </div>
-                                <input type="text" class="form-control survey-info" target="survey-start">
+                                <input type="text" class="form-control survey-info date-picker" target="survey-start">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">結束</span>
                                 </div>
-                                <input type="text" class="form-control survey-info" target="survey-end">
+                                <input type="text" class="form-control survey-info date-picker" target="survey-end">
                             </div>
                         </div>
                         <div class="form-group">
@@ -236,10 +236,10 @@ var rawData = {},
                         </div>`,
                         '<button type="button" class="btn btn-success btn-sm float-right" id="survey-form-sumbit">提交設定</button>',
                         modalTitle,
-                        function(){
+                        function(){                   
                             $('input.survey-info[target="name"]').keyup(function(){
                                 var value = $(this).val(), 
-                                    filePath = value + "/" + value + ".json"
+                                    filePath = "data/" + value + "/" + value + ".json"
                                 if (value !== "") {
                                     $('input.survey-info[target="detailFile"]').val(filePath)
                                 } else {
@@ -248,11 +248,11 @@ var rawData = {},
                             })
                             if (input) {
                                 // 依目前state更新至表單值
-                                $('input.survey-info[target="event-start"]').val(input.event.start)
-                                $('input.survey-info[target="event-end"]').val(input.event.end)
+                                $('input.survey-info[target="event-start"]').val(input.event.start.slice(0,4) + "-" + input.event.start.slice(4,6) + "-" + input.event.start.slice(6,8))
+                                $('input.survey-info[target="event-end"]').val(input.event.end.slice(0,4) + "-" + input.event.end.slice(4,6) + "-" + input.event.end.slice(6,8))
                                 $('input.survey-info[target="survey-member"]').val(input.survey.member)
-                                $('input.survey-info[target="survey-start"]').val(input.survey.start)
-                                $('input.survey-info[target="survey-end"]').val(input.survey.end)
+                                $('input.survey-info[target="survey-start"]').val(input.survey.start.slice(0,4) + "-" + input.survey.start.slice(4,6) + "-" + input.survey.start.slice(6,8))
+                                $('input.survey-info[target="survey-end"]').val(input.survey.end.slice(0,4) + "-" + input.survey.end.slice(4,6) + "-" + input.survey.end.slice(6,8))
                                 $('input.survey-info[target="year"]').val(input.year)
                                 $('input.survey-info[target="name"]').val(input.name)
                                 $('select.survey-info[target="reason"]').val(input.reason)
@@ -266,6 +266,10 @@ var rawData = {},
                                 $('select.survey-info[target="totalEconomicLose-external-type"]').val(input.totalEconomicLose.external.type)
                                 $('input.survey-info[target="totalEconomicLose-external-url"]').val(input.totalEconomicLose.external.url)
                                 $('input.survey-info[target="detailFile"]').val(input.detailFile)
+                                $('.date-picker').datepicker({
+                                    format: 'yyyy-mm-dd',
+                                    orientation: 'top'
+                                })
                                 // 表單提交 - 更新狀況
                                 $("#survey-form-sumbit").click(function(){
                                     var updateObject = createObjectTemplateWithValue()
@@ -274,12 +278,20 @@ var rawData = {},
                                     $("#event_modal").modal('hide')
                                 })
                             } else {
+                                $('.date-picker').datepicker({
+                                    format: 'yyyy-mm-dd',
+                                    orientation: 'top'
+                                })
                                 // 表單提交 - 新增狀況
                                 $("#survey-form-sumbit").click(function(){
                                     var insertObject = createObjectTemplateWithValue()
-                                    editData.basic.push(insertObject)
-                                    renewData("update")
-                                    $("#event_modal").modal('hide')
+                                    if (insertObject.name === "") {
+                                        alert("事件名稱尚未填寫！")
+                                    } else {
+                                        editData.basic.push(insertObject)
+                                        renewData("update")
+                                        $("#event_modal").modal('hide')
+                                    }
                                 })
                             }
                         }
@@ -293,7 +305,7 @@ var rawData = {},
                 <h4 class="text-muted">
                     <span class="badge badge-pill badge-info">目前設定資料清單</span>
                 </h4>
-                <div class="table-responsive">
+                <div class="table-responsive" style="overflow-x: unset;">
                     <table id="efffective-event-table" class="table table-striped table-bordered table-sm">
                         <thead class="thead-dark">
                             <tr>
@@ -322,9 +334,7 @@ var rawData = {},
                 $("#efffective-event-table").on("click", ".setting-event", function(){
                     var targetIndex = Number($(this).attr("target-id")),
                         thisEventInfo = editData.basic[targetIndex],
-                        thisServerSettingJson = ajax_call("data/" + thisEventInfo.detailFile)
-                    console.log(thisEventInfo)
-                    console.log(thisServerSettingJson)
+                        thisServerSettingJson = ajax_call(thisEventInfo.detailFile)
                     if (thisServerSettingJson) {
                         if (thisEventInfo.page) {
                             editModal(thisEventInfo, targetIndex, thisEventInfo.page)
@@ -333,7 +343,12 @@ var rawData = {},
                             editModal(thisEventInfo, targetIndex, thisServerSettingJson.page)
                         }
                     } else {
-                        editModal(thisEventInfo, targetIndex)
+                        if (thisEventInfo.page) {
+                            editModal(thisEventInfo, targetIndex, thisEventInfo.page)
+                        } else {
+                            thisEventInfo.page = []
+                            editModal(thisEventInfo, targetIndex)
+                        }
                     }
                 })
 
@@ -592,10 +607,10 @@ var rawData = {},
 }
 
 $(document).ready(function() {
-    var render = { nav: '' }
+    var render = { nav: '' }, randomh = Date.now();
     // data
-    rawData.basic = ajax_call('data/basic.json')
-    editData.basic = ajax_call('data/basic.json')
+    rawData.basic = ajax_call('data/basic.json?t=' + randomh)
+    editData.basic = ajax_call('data/basic.json?t=' + randomh)
     // initial
     Object.keys(functionList).forEach(function(el){
         render.nav += 

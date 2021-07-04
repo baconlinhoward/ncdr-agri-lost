@@ -1,6 +1,7 @@
 $(document).ready(function(){
-  var data = {
-        project: ajax_call("data/basic.json").sort(function(a, b){
+  var randomh = Date.now(),
+      data = {
+        project: ajax_call("data/basic.json?t=" + randomh).sort(function(a, b){
           return b.event.start - a.event.start
         }),
         taiwanLayer: ajax_call("data/taiwan.json")
@@ -369,7 +370,7 @@ function mainPageTemplate(data){
 }
 
 function casePageTemplate(data){
-  console.log(data)
+  var randomh = Date.now()
   data.agriType = 0
   data.region = data.mainAffectCounty.length
   data.county = {}
@@ -384,7 +385,7 @@ function casePageTemplate(data){
         <td>${eachRegion.crops.join('、')}</td>
       </tr>`
   })
-  data.pageData = ajax_call('data/' + data.detailFile)
+  data.pageData = ajax_call(data.detailFile + "?t=" + randomh)
   var html = `
     <section class="counts pb-0" style="height: calc( 100vh - 115px ); padding-top: 10px;">
       <div class="container" data-aos="fade-up" style="max-width: unset">
