@@ -54,9 +54,8 @@
     </div>
   </div>
 
-  <div class="modal fade" id="event_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 600px !important;">
+  <div class="modal fade" id="event_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title font-weight-bold w-100">視窗檢視</h5>
@@ -79,7 +78,21 @@
   <script type="text/javascript" src="assets/manage/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="assets/manage/jquery-ui.min.js"></script>
   <script type="text/javascript" src="assets/manage/bootstrap-datepicker.min.js"></script>
-  <script type="text/javascript" src="assets/manage/initial.js"></script>
+  <script type="text/javascript">
+		(function(){
+			var script_list = ["assets/manage/initial"];
+			script_list.forEach(function(element){
+				var randomh = Date.now();
+				var e = document.getElementsByTagName("script")[0];
+				var d = document.createElement("script");
+				d.src = element + ".js?x="+randomh+"";
+				d.type = "text/javascript"; 
+				d.async = false;
+				d.defer = false;
+				e.parentNode.insertBefore(d,e);
+			});
+		})();
+	</script>
 </body>
 
 </html>

@@ -42,7 +42,7 @@
     <div class="container d-flex" style="max-width: unset">
       <div class="contact-info mr-auto">
         <a href="https://www.ncdr.nat.gov.tw/" target="_blank"><img class="mr-2 mt-1" src="src/logo.png" height="40" alt=""></a>
-        <a class="font-weight-bold h3 align-middle" href="#" style="vertical-align: text-top !important;">NCDR農業災害紀實網</a>
+        <a class="font-weight-bold h3 align-middle" href="#" style="vertical-align: text-top !important;">農業災害紀實網</a>
       </div>
       <div class="social-links">
         <button class="btn btn-link text-white mt-1" data-toggle="dropdown"><i class="icofont-listine-dots mr-2"></i>事件篩選</button>
@@ -147,9 +147,21 @@
   <!-- Template Main JS File -->
   <script src="https://code.highcharts.com/stock/highstock.js"></script>
   <script src="assets/js/jquery.mousewheel.min.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/initial.js"></script>
-
+  <script type="text/javascript">
+		(function(){
+			var script_list = ["assets/js/main", "assets/js/initial"];
+			script_list.forEach(function(element){
+				var randomh = Date.now();
+				var e = document.getElementsByTagName("script")[0];
+				var d = document.createElement("script");
+				d.src = element + ".js?x="+randomh+"";
+				d.type = "text/javascript"; 
+				d.async = false;
+				d.defer = false;
+				e.parentNode.insertBefore(d,e);
+			});
+		})();
+	</script>
 </body>
 
 </html>

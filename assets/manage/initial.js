@@ -1,4 +1,5 @@
-var rawData = {},
+var taiwanLayer = ajax_call("data/taiwan.json"),
+    rawData = {},
     editData = {},
     functionList = {
         'basic': {
@@ -30,8 +31,12 @@ var rawData = {},
                 </div>`,
             execute: function(){
                 var html = {
-                    tbody: []
+                    tbody: [],
+                    taiwainOption: ""
                 }
+                taiwanLayer.features.forEach(function(feature){
+                    html.taiwainOption += `<option value="${feature.properties.COUNTYNAME}">${feature.properties.COUNTYNAME}</option>`
+                })
                 renewData()
                 var thisDatatable = $("#efffective-event-table").DataTable({
                     data: html.tbody
@@ -101,16 +106,7 @@ var rawData = {},
                                 "url": $('input.survey-info[target="estimatedRainAccumulation-external-url"]').val()
                             }
                         },
-                        "mainAffectCounty": [{
-                            "name": "屏東縣",
-                            "crops": ["芒果", "蓮霧", "荔枝"]
-                        }, {
-                            "name": "高雄市",
-                            "crops": ["水稻", "木瓜"]
-                        }, {
-                            "name": "雲林縣",
-                            "crops": ["食用玉米", "落花生"]
-                        }],
+                        "mainAffectCounty": [],
                         "totalEconomicLose": {
                             "value": Number($('input.survey-info[target="totalEconomicLose-value"]').val()),
                             "external": {
@@ -121,6 +117,12 @@ var rawData = {},
                         },
                         "detailFile": $('input.survey-info[target="detailFile"]').val()
                     }
+                    $("tr.survey-info-adding-row").each(function(){
+                        result["mainAffectCounty"].push({
+                            "name": $(this).find("td").eq(0).text(),
+                            "crops": $(this).find("td").eq(1).text().split(",")
+                        })
+                    })
                     return result
                 }
 
@@ -148,6 +150,36 @@ var rawData = {},
                             <label class="mb-1">所屬年度(西元)</label>
                             <input class="form-control form-control-sm survey-info" target="year">
                         </div>
+                        <div class="form-group mb-0">
+                            <label class="mb-1">影響縣市與作物</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">縣市</span>
+                                </div>
+                                <select class="form-control form-control-sm survey-info-adding-affected-input" target="region">
+                                    ${html.taiwainOption}
+                                </select>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">作物</span>
+                                </div>
+                                <input type="text" class="form-control survey-info-adding-affected-input" target="crop" placeholder="多作物時，請用「,」隔開">
+                                <button type="button" class="btn btn-primary btn-sm rounded-0" id="survey-info-adding-affected-trig">新增</button>
+                            </div>
+                        </div>
+                        <table id="survey-info-adding-affected-table" class="table table-sm table-bordered text-center">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>縣市名稱</th>
+                                    <th>作物清單</th>
+                                    <th>刪除</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="survey-info-adding-affected-unset">
+                                    <td colspan="3">目前無設定影響縣市與作物</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <div class="form-group">
                             <label class="mb-1">事件發生</label>
                             <div class="input-group input-group-sm">
@@ -246,8 +278,51 @@ var rawData = {},
                                     $('input.survey-info[target="detailFile"]').val("")
                                 }
                             })
+                            $("#survey-info-adding-affected-table tbody").on("click", "button.survey-info-adding-affected-delete", function(){
+                                $(this).parents("tr").eq(0).remove()
+                                if ($("tr.survey-info-adding-row").length === 0) {
+                                    $("#survey-info-adding-affected-table tbody").html('<tr id="survey-info-adding-affected-unset"> <td colspan="3">目前無設定影響縣市與作物</td> </tr>')
+                                }
+                            })
+                            $('#survey-info-adding-affected-trig').click(function(){
+                                var param = {}, 
+                                    valueCheck = true,
+                                    currentSetting = $("#survey-info-adding-affected-unset").length //判斷目前有否影響作物的設定
+                                $(".survey-info-adding-affected-input").each(function(){
+                                    param[$(this).attr("target")] = $(this).val()
+                                    if ($(this).val() === "") {
+                                        valueCheck = false
+                                    }
+                                })
+                                if (valueCheck) {
+                                    if (currentSetting) {
+                                        $("#survey-info-adding-affected-unset").remove()
+                                    }
+                                    $("#survey-info-adding-affected-table tbody").append(`
+                                        <tr class="survey-info-adding-row">
+                                            <td>${param.region}</td>
+                                            <td>${param.crop}</td>
+                                            <td><button type="button" class="btn btn-sm btn-danger survey-info-adding-affected-delete">刪除</button></td>
+                                        </tr>`
+                                    )
+                                } else {
+                                    alert("作物欄位不得為空")
+                                }
+                            })
                             if (input) {
                                 // 依目前state更新至表單值
+                                if (input.mainAffectCounty.length !== 0) {
+                                    var html = ""
+                                    input.mainAffectCounty.forEach(element => {
+                                        html += `
+                                            <tr class="survey-info-adding-row">
+                                                <td>${element.name}</td>
+                                                <td>${element.crops.join()}</td>
+                                                <td><button type="button" class="btn btn-sm btn-danger survey-info-adding-affected-delete">刪除</button></td>
+                                            </tr>`
+                                    })
+                                    $("#survey-info-adding-affected-table tbody").html(html)
+                                }
                                 $('input.survey-info[target="event-start"]').val(input.event.start.slice(0,4) + "-" + input.event.start.slice(4,6) + "-" + input.event.start.slice(6,8))
                                 $('input.survey-info[target="event-end"]').val(input.event.end.slice(0,4) + "-" + input.event.end.slice(4,6) + "-" + input.event.end.slice(6,8))
                                 $('input.survey-info[target="survey-member"]').val(input.survey.member)
@@ -685,7 +760,7 @@ function time_string_processing(input){
 }
 
 function downloadObjectAsJson(exportObj, exportName){
-    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
     var downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href",     dataStr);
     downloadAnchorNode.setAttribute("download", exportName + ".json");

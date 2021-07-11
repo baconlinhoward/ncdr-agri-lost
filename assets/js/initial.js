@@ -150,7 +150,7 @@ $(document).ready(function(){
           onEachFeature: function(feature, layer){
             layer.bindTooltip(feature.properties["COUNTYNAME"] + "<br>影響作物：" + targetCaseHtml.output.county[feature.properties["COUNTYNAME"]].join("、"), {
               sticky: true,
-              opacity: 1
+              opacity: 0.7
             })
           }
         }).addTo(map)
@@ -333,21 +333,21 @@ function mainPageTemplate(data){
                 <div class="count-box">
                   <i class="icofont-money"></i>
                   <span data-toggle="counter-up">${input.economic.toFixed(2)}</span>
-                  <p>總經濟損失(億)</p>
+                  <p>累計經濟損失(億)</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
                 <div class="count-box">
                   <i class="icofont-google-map"></i>
                   <span data-toggle="counter-up">${input.region}</span>
-                  <p>總災區次數(縣市)</p>
+                  <p>累計災區次數(縣市)</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
                 <div class="count-box">
                   <i class="icofont-plant"></i>
                   <span data-toggle="counter-up">${input.agriType}</span>
-                  <p>損失作物種類</p>
+                  <p>累計損失作物種類次數</p>
                 </div>
               </div>
               <div class="col-lg-12 mt-3 mb-1">
@@ -370,14 +370,20 @@ function mainPageTemplate(data){
 }
 
 function casePageTemplate(data){
-  var randomh = Date.now()
-  data.agriType = 0
+  var randomh = Date.now(),
+      agriObject = {},
+      displayNone = {
+        surveyMember: "",
+        content: ""
+      }
   data.region = data.mainAffectCounty.length
   data.county = {}
   data.mainAffectCountyTableHtml = ""
   data.mainAffectCounty.forEach(function(eachRegion, index){
     data.county[eachRegion.name] = eachRegion.crops
-    data.agriType += eachRegion.crops.length
+    eachRegion.crops.forEach(eachCrop => {
+      agriObject[eachCrop] = true
+    })
     data.mainAffectCountyTableHtml += `
       <tr>
         <td>${(index+1)}</td>
@@ -385,7 +391,14 @@ function casePageTemplate(data){
         <td>${eachRegion.crops.join('、')}</td>
       </tr>`
   })
+  data.agriType = Object.keys(agriObject).length
   data.pageData = ajax_call(data.detailFile + "?t=" + randomh)
+  if (data.survey.member === null || data.survey.member === "") {
+    displayNone.surveyMember = "d-none"
+  }
+  if (data.content === null || data.content === undefined || data.content === "") {
+    displayNone.content = "d-none"
+  }
   var html = `
     <section class="counts pb-0" style="height: calc( 100vh - 115px ); padding-top: 10px;">
       <div class="container" data-aos="fade-up" style="max-width: unset">
@@ -427,9 +440,9 @@ function casePageTemplate(data){
                 <ul>
                   <li>事件時間：${timeConverter(data.event.start) + "~" + timeConverter(data.event.end)}</li>
                   <li>調查時間：${timeConverter(data.survey.start) + "~" + timeConverter(data.survey.end)}</li>
-                  <li>調查人員：${nullConverter(data.survey.member)}</li>
+                  <li class="${displayNone.surveyMember}">調查人員：${nullConverter(data.survey.member)}</li>
                   <li>發生原因：${nullConverter(data.reason)}</li>
-                  <li>事件簡述：${nullConverter(data.content)}</li>
+                  <li class="${displayNone.content}">事件簡述：${nullConverter(data.content)}</li>
                 </ul>
               </div>
               <div class="col-lg-7 overflow-auto" style="height: calc( 100vh - 390px );">
@@ -450,7 +463,7 @@ function casePageTemplate(data){
                 </ul>
               </div>
               <div class="col-lg-12 text-center">
-                <button type="button" id="caseDetailedPageInitial" class="btn btn-lg btn-success shadow-sm font-weight-bold mt-1">查看事件紀實(共${data.pageData.page.length}頁)<i class="icofont-simple-down ml-2"></i></button>
+                <button type="button" id="caseDetailedPageInitial" class="btn btn-success shadow-sm font-weight-bold mt-1">查看事件紀實(共${data.pageData.page.length}頁)<i class="icofont-simple-down ml-2"></i></button>
               </div>
             </div>
           </div>
