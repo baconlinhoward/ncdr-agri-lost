@@ -106,6 +106,7 @@ var taiwanLayer = ajax_call("data/taiwan.json"),
                                 "url": $('input.survey-info[target="estimatedRainAccumulation-external-url"]').val()
                             }
                         },
+                        "analysisChart": $('input.survey-info[target="analysisChart"]').val(),
                         "mainAffectCounty": [],
                         "totalEconomicLose": {
                             "value": Number($('input.survey-info[target="totalEconomicLose-value"]').val()),
@@ -226,6 +227,10 @@ var taiwanLayer = ajax_call("data/taiwan.json"),
                             <input class="form-control form-control-sm survey-info" target="totalEconomicLose-value">
                         </div>
                         <div class="form-group">
+                            <label class="mb-1">事件分析圖嵌入連結(iframe)</label>
+                            <input class="form-control form-control-sm survey-info" target="analysisChart">
+                        </div>
+                        <div class="form-group">
                             <label class="mb-1">經濟損失額外資訊設定</label>
                             <div class="input-group input-group-sm">
                                 <div class="input-group-prepend">
@@ -337,6 +342,7 @@ var taiwanLayer = ajax_call("data/taiwan.json"),
                                 $('select.survey-info[target="estimatedRainAccumulation-external-type"]').val(input.estimatedRainAccumulation.external.type)
                                 $('input.survey-info[target="estimatedRainAccumulation-external-url"]').val(input.estimatedRainAccumulation.external.url)
                                 $('input.survey-info[target="totalEconomicLose-value"]').val(input.totalEconomicLose.value)
+                                $('input.survey-info[target="analysisChart"]').val(input.analysisChart)
                                 $('input.survey-info[target="totalEconomicLose-external-name"]').val(input.totalEconomicLose.external.name)
                                 $('select.survey-info[target="totalEconomicLose-external-type"]').val(input.totalEconomicLose.external.type)
                                 $('input.survey-info[target="totalEconomicLose-external-url"]').val(input.totalEconomicLose.external.url)
@@ -409,7 +415,7 @@ var taiwanLayer = ajax_call("data/taiwan.json"),
                 $("#efffective-event-table").on("click", ".setting-event", function(){
                     var targetIndex = Number($(this).attr("target-id")),
                         thisEventInfo = editData.basic[targetIndex],
-                        thisServerSettingJson = ajax_call(thisEventInfo.detailFile)
+                        thisServerSettingJson = ajax_call(thisEventInfo.detailFile + "?t=" + Date.now())
                     if (thisServerSettingJson) {
                         if (thisEventInfo.page) {
                             editModal(thisEventInfo, targetIndex, thisEventInfo.page)
@@ -545,17 +551,22 @@ var taiwanLayer = ajax_call("data/taiwan.json"),
                                                             <option value="map">地圖</option>
                                                         </select>
                                                     </div>
-                                                    <div class="mb-3 coor-input">
-                                                        <label class="m-0">地圖經緯度設定</label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">經度</span>
+                                                    <div id="coor-input-block">
+                                                        <div class="mb-3 coor-input">
+                                                            <label class="m-0">
+                                                                地圖經緯度設定
+                                                            </label>
+                                                            <button type="button" class="btn btn-danger btn-sm float-right pt-0 pb-0 pl-1 pr-1" id="coor-input-adding">增加點位</button>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">經度</span>
+                                                                </div>
+                                                                <input type="text" class="form-control" target="lon">
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text">緯度</span>
+                                                                </div>
+                                                                <input type="text" class="form-control" target="lat">
                                                             </div>
-                                                            <input type="text" class="form-control" target="lon">
-                                                            <div class="input-group-append">
-                                                                <span class="input-group-text">緯度</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" target="lat">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -592,8 +603,34 @@ var taiwanLayer = ajax_call("data/taiwan.json"),
                                             thisPageInfo.mainContent.shape = "full"
                                         }
                                         if (thisPageInfo.coordinates != undefined) {
-                                            $('#survey-page-updating-row .coor-input input[target="lon"]').val(thisPageInfo.coordinates[1])
-                                            $('#survey-page-updating-row .coor-input input[target="lat"]').val(thisPageInfo.coordinates[0])
+                                            if (thisPageInfo.coordinates.length !== 0) {
+                                                if (thisPageInfo.coordinates.length > 1) {
+                                                    for (var index = 1; index < thisPageInfo.coordinates.length; index++) {
+                                                        $("#coor-input-block").append(`
+                                                            <div class="mb-3 coor-input">
+                                                                <label class="m-0 w-100">
+                                                                    地圖經緯度設定
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">經度</span>
+                                                                    </div>
+                                                                    <input type="text" class="form-control" target="lon">
+                                                                    <div class="input-group-append">
+                                                                        <span class="input-group-text">緯度</span>
+                                                                    </div>
+                                                                    <input type="text" class="form-control" target="lat">
+                                                                </div>
+                                                            </div>`
+                                                        )
+                                                    }
+                                                }
+                                                $('#survey-page-updating-row .coor-input').each(function(index){
+                                                    $('#survey-page-updating-row .coor-input input[target="lon"]').eq(index).val(thisPageInfo.coordinates[index][1])
+                                                    $('#survey-page-updating-row .coor-input input[target="lat"]').eq(index).val(thisPageInfo.coordinates[index][0])
+                                                })
+                                            }
+
                                         }
                                         $('#survey-page-updating-row input[target="title"]').val(thisPageInfo.title)
                                         $('#survey-page-updating-row select[target="type"]').val(thisPageInfo.type)
@@ -602,6 +639,25 @@ var taiwanLayer = ajax_call("data/taiwan.json"),
                                         $('#survey-page-updating-row select[target="mainContent-shape"]').val(thisPageInfo.mainContent.shape)
                                         $("#survey-page-updating-row textarea").val(thisPageInfo.supportContent[0])
                                         // 
+                                        $("#coor-input-adding").click(function(){
+                                            $("#coor-input-block").append(`
+                                                <div class="mb-3 coor-input">
+                                                    <label class="m-0 w-100">
+                                                        地圖經緯度設定
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">經度</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" target="lon">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">緯度</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" target="lat">
+                                                    </div>
+                                                </div>`
+                                            )
+                                        })
                                         $("#survey-page-updating-row .btn").click(function(){
                                             switch ($(this).attr("target")) {
                                                 case "update":
@@ -611,7 +667,14 @@ var taiwanLayer = ajax_call("data/taiwan.json"),
                                                     thisPageInfo.mainContent.url = $('#survey-page-updating-row input[target="mainContent-url"]').val()
                                                     thisPageInfo.mainContent.shape = $('#survey-page-updating-row select[target="mainContent-shape"]').val()
                                                     thisPageInfo.supportContent[0] = $("#survey-page-updating-row textarea").val()
-                                                    thisPageInfo.coordinates = [$('#survey-page-updating-row .coor-input input[target="lat"]').val(), $('#survey-page-updating-row .coor-input input[target="lon"]').val()]
+                                                    thisPageInfo.coordinates = []
+                                                    $('#survey-page-updating-row .coor-input').each(function(){
+                                                        var lat = $(this).find('input[target="lat"]').eq(0).val(),
+                                                            lon = $(this).find('input[target="lon"]').eq(0).val()
+                                                        if (lat !== "" && lon !== "") {
+                                                            thisPageInfo.coordinates.push([lat, lon])
+                                                        }    
+                                                    })
                                                     renewSurveyPageTable(thisEventInfo.page)
                                                     break;
                                                 case "close":

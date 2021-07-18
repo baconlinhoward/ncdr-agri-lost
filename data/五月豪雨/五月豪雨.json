@@ -1,5 +1,5 @@
 {
-	"name": "0522水災",
+	"name": "五月豪雨",
 	"page": [{
 		"type": "normal",
 		"title": "圖片頁面說明",
@@ -11,7 +11,7 @@
 		"mainContent": {
 			"type": "image",
 			"shape": "scale",
-			"url": "data/0522水災/投影片2.JPG"
+			"url": "data/五月豪雨/投影片2.JPG"
 		}
 	},{
 		"type": "normal",
@@ -24,7 +24,7 @@
 		"mainContent": {
 			"type": "image",
 			"shape": "scale",
-			"url": "data/0522水災/投影片3.JPG"
+			"url": "data/五月豪雨/投影片3.JPG"
 		}
 	},{
 		"type": "normal",
@@ -37,7 +37,7 @@
 		"mainContent": {
 			"type": "image",
 			"shape": "scale",
-			"url": "data/0522水災/投影片4.JPG"
+			"url": "data/五月豪雨/投影片4.JPG"
 		}
 	},{
 		"type": "normal",
@@ -50,7 +50,7 @@
 		"mainContent": {
 			"type": "image",
 			"shape": "scale",
-			"url": "data/0522水災/投影片5.JPG"
+			"url": "data/五月豪雨/投影片5.JPG"
 		}
 	},{
 		"type": "normal",
@@ -63,7 +63,7 @@
 		"mainContent": {
 			"type": "image",
 			"shape": "scale",
-			"url": "data/0522水災/投影片6.JPG"
+			"url": "data/五月豪雨/投影片6.JPG"
 		}
 	},
 	{
@@ -87,7 +87,7 @@
 		"mainContent": {
 			"type": "image",
 			"shape": "scale",
-			"url": "data/0522水災/投影片15.JPG"
+			"url": "data/五月豪雨/投影片15.JPG"
 		}
 	}]
 }

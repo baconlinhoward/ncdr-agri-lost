@@ -17,6 +17,10 @@
   height: 400px;
 }
 
+.h-500 {
+  height: 500px;
+}
+
 .legend i {
   width: 18px;
   height: 18px;
